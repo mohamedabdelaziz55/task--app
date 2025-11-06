@@ -22,14 +22,10 @@ class ProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
-      appBar: showAppBar
-          ? AppBar(
+      appBar:  AppBar(
               backgroundColor: AppColors.primaryBackground,
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: AppColors.primaryText),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+
               title: const Text('Profile'),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(1),
@@ -39,7 +35,7 @@ class ProfileView extends ConsumerWidget {
                 ),
               ),
             )
-          : null,
+      ,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

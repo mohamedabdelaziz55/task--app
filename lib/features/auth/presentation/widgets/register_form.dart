@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/widgets/app_text_field.dart';
@@ -39,32 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 80,
-      );
-      
-      if (image != null) {
-        setState(() {
-          _selectedImage = image;
-        });
-      }
-    } catch (e) {
-      // Handle error silently or show a snackbar
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to pick image: ${e.toString()}'),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
-    }
-  }
+
 
   void _handleRegister() {
     if (_formKey.currentState!.validate()) {
@@ -125,6 +99,11 @@ class _RegisterFormState extends State<RegisterForm> {
         child: Column(
           children: [
             AppTextField(
+              hint: 'Username',
+              controller: _usernameController,
+              validator: _usernameValidator,
+            ),
+            AppTextField(
               hint: 'Email address',
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
@@ -164,22 +143,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 },
               ),
             ),
-            AppTextField(
-              hint: 'Username',
-              controller: _usernameController,
-              validator: _usernameValidator,
-            ),
-            _ProfilePhotoPlaceholder(
-              selectedImage: _selectedImage,
-              onTap: _pickImage,
-              onRemove: _selectedImage != null
-                  ? () {
-                      setState(() {
-                        _selectedImage = null;
-                      });
-                    }
-                  : null,
-            ),
+
+
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -196,77 +161,4 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-class _ProfilePhotoPlaceholder extends StatelessWidget {
-  final XFile? selectedImage;
-  final VoidCallback onTap;
-  final VoidCallback? onRemove;
-
-  const _ProfilePhotoPlaceholder({
-    this.selectedImage,
-    required this.onTap,
-    this.onRemove,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.primaryBackground,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: AppColors.tertiaryBackground,
-            width: 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: AppColors.tertiaryBackground,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: selectedImage != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        File(selectedImage!.path),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.image,
-                      color: AppColors.primaryText,
-                    ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                selectedImage != null ? 'Change profile photo' : 'Add profile photo',
-                style: const TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            if (selectedImage != null && onRemove != null)
-              IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  color: AppColors.secondaryText,
-                  size: 20,
-                ),
-                onPressed: onRemove,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:task_auth_and_profile/features/users/presentation/views/user_deteils.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/widgets/app_loading_indicator.dart';
 import '../../users_provider.dart';
@@ -130,7 +131,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (_) => ProfileView(user: user),
+                                        builder: (_) => UserDeteils(user: user),
                                       ),
                                     );
                                   },

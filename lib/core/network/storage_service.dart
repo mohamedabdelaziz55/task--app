@@ -85,7 +85,6 @@ class StorageService {
     return token != null && token.isNotEmpty;
   }
 
-  // Get token (for backward compatibility with API client)
   Future<String?> getToken() async {
     return await getAccessToken();
   }

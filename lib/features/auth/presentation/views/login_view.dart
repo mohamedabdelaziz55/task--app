@@ -39,61 +39,70 @@ class _LoginViewState extends ConsumerState<LoginView> {
       backgroundColor: AppColors.primaryBackground,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: const Text(
-                'Log In',
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
                 ),
-              ),
-            ),
-
-            // Welcome text
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Text(
-                'Welcome back',
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            // Login Form
-            Expanded(
-              child: LoginForm(
-                onLogin: (email, password) => _handleLogin(email, password),
-                isLoading: authState.isLoading,
-              ),
-            ),
-
-            // Sign up button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AppRoutes.register);
-                },
-                child: const Text(
-                  'New User Sign Up',
-                  style: TextStyle(
-                    color: AppColors.primaryText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        child: const Text(
+                          'Log In',
+                          style: TextStyle(
+                            color: AppColors.primaryText,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        child: Text(
+                          'Welcome back',
+                          style: TextStyle(
+                            color: AppColors.primaryText,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: LoginForm(
+                          onLogin: (email, password) => _handleLogin(email, password),
+                          isLoading: authState.isLoading,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(AppRoutes.register);
+                          },
+                          child: const Text(
+                            'New User Sign Up',
+                            style: TextStyle(
+                              color: AppColors.primaryText,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
